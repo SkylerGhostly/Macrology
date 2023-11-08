@@ -1,0 +1,18 @@
+[
+  {
+    "Author": "ascclemens, Skyler Ghostly",
+    "Name": "Macrology",
+    "Description": "Adds a better macro system to the game.",
+    "InternalName": "Macrology",
+    "AssemblyVersion": "1.0.1.0",
+    "TestingAssemblyVersion": "1.0.1.0",
+    "RepoUrl": "https://github.com/SkylerGhostly/Macrology/",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 9,
+    "DownloadCount": 0,
+    "LastUpdate": 0,
+    "DownloadLinkInstall": "https://github.com/SkylerGhostly/Macrology/releases/download/latest.zip",
+    "DownloadLinkTesting": "https://github.com/SkylerGhostly/Macrology/releases/download/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/SkylerGhostly/Macrology/releases/download/latest.zip"
+  }
+]
