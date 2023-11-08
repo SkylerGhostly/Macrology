@@ -1,5 +1,8 @@
 # Macrology
 
+**I did not write this plugin. Updates are being made by me, 
+but the original author is [@lojewalo]
+
 **This plugin is still under heavy development and is not
 stable. Proceed with caution.**
 
@@ -35,7 +38,12 @@ for easier access.
 
 Macro macros can loop by using the `/loop` command. Whenever this
 command is encountered in a macro, it will start the macro over from
-the beginning.
+the beginning. A number can be provided after the command to specify
+how many times the macro should loop. If no number is provided, the
+macro will loop indefinitely.
+
+Secondly, you can also add `/start` to signify the beginning of the
+loop. This is useful if you want to loop only a part of the macro.
 
 ### Pausing
 
