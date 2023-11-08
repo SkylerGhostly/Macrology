@@ -11,8 +11,8 @@
     "DalamudApiLevel": 9,
     "DownloadCount": 0,
     "LastUpdate": 0,
-    "DownloadLinkInstall": "https://github.com/SkylerGhostly/Macrology/releases/download/latest.zip",
-    "DownloadLinkTesting": "https://github.com/SkylerGhostly/Macrology/releases/download/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/SkylerGhostly/Macrology/releases/download/latest.zip"
+    "DownloadLinkInstall": "https://github.com/SkylerGhostly/Macrology//releases/latest/download/latest.zip",
+    "DownloadLinkTesting": "https://github.com/SkylerGhostly/Macrology//releases/latest/download/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/SkylerGhostly/Macrology//releases/latest/download/latest.zip"
   }
 ]
