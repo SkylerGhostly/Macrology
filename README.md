@@ -1,7 +1,7 @@
 # Macrology
 
 **I did not write this plugin. Updates are being made by me, 
-but the original author is [@lojewalo]**
+but the original author is [@lojewalo](https://github.com/lojewalo)**
 
 **This plugin is still under heavy development and is not
 stable. Proceed with caution.**
