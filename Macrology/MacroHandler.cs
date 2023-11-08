@@ -53,17 +53,21 @@ namespace Macrology
 				return id;
 
 			this.Running.TryAdd( id, macro );
-			Task.Run( async ( ) =>
-			{
+			Task.Run( async ( ) => {
 				// the default wait
 				TimeSpan? defWait = null;
 				// keep track of the line we're at in the macro
 				var i = 0;
+				int loops = 0;
+				bool limitedLoops = false;
+				int loopStart = 0;
 				do
 				{
 					// cancel if requested
 					if( this._cancelled.TryRemove( id, out var cancel ) && cancel )
+					{
 						break;
+					}
 
 					// wait a second instead of executing if paused
 					if( this._paused.TryGetValue( id, out var paused ) && paused )
@@ -73,22 +77,53 @@ namespace Macrology
 					}
 
 					// get the line of the command
-					var command = commands[i];
+					var command = commands[ i ];
 					// find the amount specified to wait, if any
-					var wait = ExtractWait(ref command) ?? defWait;
+					var wait = ExtractWait( ref command ) ?? defWait;
 					// go back to the beginning if the command is loop
-					if( command.Trim( ) == "/loop" )
+					if( command.Trim( ) == "/start" )
 					{
-						i = 0;
+						loopStart = i;
+						i++;
+						continue;
+					}
+					else if( command.Trim( ).Split( ' ' )[ 0 ] == "/loop" )
+					{
+						if( limitedLoops == false )
+						{
+							limitedLoops = int.TryParse( command.Trim( ).Replace( "/loop", "" ), out loops );
+
+							if( loops <= 0 )
+							{
+								limitedLoops = false;
+								loops = 0;
+							}
+						}
+						else
+						{
+							loops--;
+
+							if( loops <= 0 )
+							{
+								loops = 0;
+								i++;
+								continue;
+							}
+						}
+
+						i = loopStart;
+
 						continue;
 					}
 
 					// set default wait
 					if( command.Trim( ).StartsWith( "/defaultwait " ) )
 					{
-						var defWaitStr = command.Split(' ')[1];
+						var defWaitStr = command.Split( ' ' )[ 1 ];
 						if( double.TryParse( defWaitStr, out var waitTime ) )
+						{
 							defWait = TimeSpan.FromSeconds( waitTime );
+						}
 
 						i += 1;
 						continue;
@@ -99,7 +134,9 @@ namespace Macrology
 
 					// wait a minimum amount of time (<wait.0> to bypass)
 					if( FastCommands.Contains( command.Split( ' ' )[ 0 ] ) )
+					{
 						wait ??= TimeSpan.FromMilliseconds( 10 );
+					}
 					else
 					{
 						wait ??= TimeSpan.FromMilliseconds( 100 );
@@ -109,7 +146,8 @@ namespace Macrology
 
 					// increment to next line
 					i += 1;
-				} while( i < commands.Length );
+				}
+				while( i < commands.Length );
 
 				this.Running.TryRemove( id, out _ );
 			} );
