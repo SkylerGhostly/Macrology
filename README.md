@@ -21,7 +21,7 @@ for easier access.
 
 ## Install
 
-- Add `https://plugins.annaclemens.io/unofficial` to your list of custom repositories.
+- Add `https://raw.githubusercontent.com/SkylerGhostly/Macrology/master/repo.json` to your list of custom repositories.
 - Install via `/xlplugins`.
 
 ## Commands
