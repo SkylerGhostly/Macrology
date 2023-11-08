@@ -4,7 +4,7 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <Version>1.0.1</Version>
-        <TargetFramework>net5-windows</TargetFramework>
+        <TargetFramework>net7.0-windows</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -28,8 +28,12 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.5"/>
-        <PackageReference Include="System.Threading.Channels" Version="6.0.0"/>
-        <PackageReference Include="XivCommon" Version="4.0.0-alpha.2"/>
+        <PackageReference Include="System.Threading.Channels" Version="7.0.0" />
+        <PackageReference Include="XivCommon" Version="9.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Macrology.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

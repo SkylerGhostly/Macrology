@@ -6,77 +6,102 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.Gui;
 using Dalamud.IoC;
 using XivCommon;
+using Dalamud.Plugin.Services;
 
-namespace Macrology {
-    public class Macrology : IDalamudPlugin {
-        private bool _disposedValue;
+namespace Macrology
+{
+	public class Macrology : IDalamudPlugin
+	{
+		private bool _disposedValue;
 
-        public string Name => "Macrology";
+		public string Name => "Macrology";
 
-        [PluginService]
-        internal DalamudPluginInterface Interface { get; private init; } = null!;
+		[PluginService]
+		internal DalamudPluginInterface Interface { get; private init; } = null!;
 
-        [PluginService]
-        internal ChatGui ChatGui { get; private init; } = null!;
+		[PluginService]
+		internal IChatGui ChatGui { get; private init; } = null!;
 
-        [PluginService]
-        internal ClientState ClientState { get; private init; } = null!;
+		[PluginService]
+		internal IClientState ClientState { get; private init; } = null!;
 
-        [PluginService]
-        internal CommandManager CommandManager { get; private init; } = null!;
+		[PluginService]
+		internal ICommandManager CommandManager { get; private init; } = null!;
 
-        [PluginService]
-        internal Framework Framework { get; private init; } = null!;
+		[PluginService]
+		internal IFramework Framework { get; private init; } = null!;
+		[PluginService]
+		internal IPluginLog PluginLog { get; private init; } = null!;
 
-        public XivCommonBase Common { get; }
-        public PluginUi Ui { get; }
-        public MacroHandler MacroHandler { get; }
-        public Configuration Config { get; }
-        private Commands Commands { get; }
+		public XivCommonBase Common { get; }
+		public PluginUi Ui { get; }
+		public MacroHandler MacroHandler { get; }
+		public Configuration Config { get; }
+		private Commands Commands { get; }
 
-        public Macrology() {
-            this.Common = new XivCommonBase();
-            this.Ui = new PluginUi(this);
-            this.MacroHandler = new MacroHandler(this);
-            this.Config = Configuration.Load(this) ?? new Configuration();
-            this.Config.Initialise(this);
-            this.Commands = new Commands(this);
+		public Macrology(
+			[RequiredVersion( "1.0" )] DalamudPluginInterface pluginInterface,
+			[RequiredVersion( "1.0" )] IFramework framework,
+			[RequiredVersion( "1.0" )] IClientState clientstate,
+			[RequiredVersion( "1.0" )] ICommandManager commandManager,
+			[RequiredVersion( "1.0" )] IPluginLog logger 
+		)
+		{
+			this.Interface = pluginInterface;
+			this.Framework = framework;
+			this.ClientState = clientstate;
+			this.CommandManager = commandManager;
+			this.PluginLog = logger;
 
-            this.Interface.UiBuilder.Draw += this.Ui.Draw;
-            this.Interface.UiBuilder.OpenConfigUi += this.Ui.OpenSettings;
-            this.Framework.Update += this.MacroHandler.OnFrameworkUpdate;
-            this.ClientState.Login += this.MacroHandler.OnLogin;
-            this.ClientState.Logout += this.MacroHandler.OnLogout;
-            foreach (var (name, desc) in Commands.Descriptions) {
-                this.CommandManager.AddHandler(name, new CommandInfo(this.Commands.OnCommand) {
-                    HelpMessage = desc,
-                });
-            }
-        }
+			this.Common = new XivCommonBase( this.Interface );
+			this.Ui = new PluginUi( this );
+			this.MacroHandler = new MacroHandler( this );
+			this.Config = Configuration.Load( this ) ?? new Configuration( );
+			this.Config.Initialise( this );
+			this.Commands = new Commands( this );
 
-        protected virtual void Dispose(bool disposing) {
-            if (this._disposedValue) {
-                return;
-            }
+			this.Interface.UiBuilder.Draw += this.Ui.Draw;
+			this.Interface.UiBuilder.OpenConfigUi += this.Ui.OpenSettings;
+			this.Framework.Update += this.MacroHandler.OnFrameworkUpdate;
+			this.ClientState.Login += this.MacroHandler.OnLogin;
+			this.ClientState.Logout += this.MacroHandler.OnLogout;
+			foreach( var (name, desc) in Commands.Descriptions )
+			{
+				this.CommandManager.AddHandler( name, new CommandInfo( this.Commands.OnCommand )
+				{
+					HelpMessage = desc,
+				} );
+			}
+		}
 
-            if (disposing) {
-                this.Interface.UiBuilder.Draw -= this.Ui.Draw;
-                this.Interface.UiBuilder.OpenConfigUi -= this.Ui.OpenSettings;
-                this.Framework.Update -= this.MacroHandler.OnFrameworkUpdate;
-                this.ClientState.Login -= this.MacroHandler.OnLogin;
-                this.ClientState.Logout -= this.MacroHandler.OnLogout;
-                foreach (var command in Commands.Descriptions.Keys) {
-                    this.CommandManager.RemoveHandler(command);
-                }
-            }
+		protected virtual void Dispose( bool disposing )
+		{
+			if( this._disposedValue )
+			{
+				return;
+			}
 
-            this._disposedValue = true;
-        }
+			if( disposing )
+			{
+				this.Interface.UiBuilder.Draw -= this.Ui.Draw;
+				this.Interface.UiBuilder.OpenConfigUi -= this.Ui.OpenSettings;
+				this.Framework.Update -= this.MacroHandler.OnFrameworkUpdate;
+				this.ClientState.Login -= this.MacroHandler.OnLogin;
+				this.ClientState.Logout -= this.MacroHandler.OnLogout;
+				foreach( var command in Commands.Descriptions.Keys )
+				{
+					this.CommandManager.RemoveHandler( command );
+				}
+			}
 
-        public void Dispose() {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-    }
+			this._disposedValue = true;
+		}
+
+		public void Dispose( )
+		{
+			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+			this.Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+	}
 }

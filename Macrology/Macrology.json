@@ -1,0 +1,13 @@
+﻿{
+  "Author": "ascclemens, Skyler Ghostly",
+  "Name": "Macrology",
+  "Punchline": "Adds a better macro system to the game.",
+  "Description": "Macrology allows for macros of infinite length, adds looping, allows comments, supports pausing, allows you to run multiple macros at once, and supports fractional waits.",
+  "InternalName": "Macrology",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "macro",
+    "macros",
+    "macrology"
+  ]
+}
